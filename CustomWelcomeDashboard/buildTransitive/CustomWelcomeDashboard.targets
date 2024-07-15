@@ -1,0 +1,21 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <CustomWelcomeDashboardContentFilesPath>$(MSBuildThisFileDirectory)..\App_Plugins\CustomWelcomeDashboard\**\*.*</CustomWelcomeDashboardContentFilesPath>
+  </PropertyGroup>
+
+  <Target Name="CopyCustomWelcomeDashboardAssets" BeforeTargets="BeforeBuild">
+    <ItemGroup>
+      <CustomWelcomeDashboardContentFiles Include="$(CustomWelcomeDashboardContentFilesPath)" />
+    </ItemGroup>
+    <Message Text="Copying CustomWelcomeDashboard files: $(CustomWelcomeDashboardContentFilesPath) - #@(CustomWelcomeDashboardContentFiles->Count()) files" Importance="high" />
+    <Copy SourceFiles="@(CustomWelcomeDashboardContentFiles)" DestinationFiles="@(CustomWelcomeDashboardContentFiles->'$(MSBuildProjectDirectory)\App_Plugins\CustomWelcomeDashboard\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="ClearCustomWelcomeDashboardAssets" BeforeTargets="Clean">
+    <ItemGroup>
+      <CustomWelcomeDashboardDir Include="$(MSBuildProjectDirectory)\App_Plugins\CustomWelcomeDashboard\" />
+    </ItemGroup>
+    <Message Text="Clear old CustomWelcomeDashboard data" Importance="high" />
+    <RemoveDir Directories="@(CustomWelcomeDashboardDir)" />
+  </Target>
+</Project>
